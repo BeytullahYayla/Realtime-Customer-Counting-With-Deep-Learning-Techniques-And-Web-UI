@@ -1,0 +1,1 @@
+python detect_from_video.py --video="C:\Users\Beytullah\Desktop\Koçtaş Group Detection\data\group\21.mp4"

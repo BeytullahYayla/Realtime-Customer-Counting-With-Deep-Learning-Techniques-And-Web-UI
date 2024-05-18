@@ -1,0 +1,9 @@
+# 1. Resmi MySQL imajını temel al
+FROM mysql:latest
+
+# 2. Çevre değişkeni (environment variable) ayarla: MySQL root kullanıcısı için parolayı belirle
+ENV MYSQL_ROOT_PASSWORD=Beytullah.123
+
+# 3. person_count_database.sql dosyasını Docker imajına kopyala
+#    Bu dosya /docker-entrypoint-initdb.d/ dizinine kopyalanacak ve MySQL başlatıldığında otomatik olarak çalıştırılacak
+COPY ./person_count_database.sql /docker-entrypoint-initdb.d/

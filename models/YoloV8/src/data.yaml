@@ -1,0 +1,13 @@
+names:
+- Group
+- person
+nc: 2
+roboflow:
+  license: CC BY 4.0
+  project: group-detection
+  url: https://universe.roboflow.com/sakarya-university-tchtv/group-detection/dataset/3
+  version: 3
+  workspace: sakarya-university-tchtv
+test: test/images
+train: train/images
+val: valid/images

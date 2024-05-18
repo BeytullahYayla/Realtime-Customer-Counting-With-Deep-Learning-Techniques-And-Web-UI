@@ -1,0 +1,20 @@
+item {
+  id: 1
+  name: 'group'
+}
+
+item {
+  id: 2
+  name: 'person'
+}
+
+item {
+  id: 3
+  name: 'group'
+}
+
+item {
+  id: 4
+  name: 'person'
+}
+
