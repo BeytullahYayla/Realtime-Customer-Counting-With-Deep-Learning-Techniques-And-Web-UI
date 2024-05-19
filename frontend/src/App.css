@@ -1,0 +1,283 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Madimi+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo&display=swap');
+
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #1d2634;
+  color: #9e9ea4;
+  font-family: 'Archivo', sans-serif;
+}
+
+.icon {
+  vertical-align: middle;
+  line-height: 1px;
+  font-size: 20px;
+}
+.icon_header {
+  vertical-align: middle;
+  line-height: 1px;
+  font-size: 26px;
+}
+.icon, .icon_header {
+  margin-right: 5px;
+}
+
+.close_icon {
+  color: red;
+  margin-left: 30px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 250px 1fr 1fr 1fr;
+  grid-template-rows: 0.2fr 3fr;
+  grid-template-areas:
+    'sidebar header header header'
+    'sidebar main main main';
+  height: 100vh;
+}
+
+/* Header  */
+.header {
+  grid-area: header;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px 0 30px;
+  box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+}
+
+.menu-icon {
+  display: none;
+}
+/* End Header  */
+
+/* Sidebar  */
+#sidebar {
+  grid-area: sidebar;
+  height: 100%;
+  background-color: #263043;
+  overflow-y: auto;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+}
+
+.sidebar-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px 0px 30px;
+  margin-bottom: 30px;
+}
+
+.sidebar-title > span {
+  display: none;
+}
+
+.sidebar-brand {
+  margin-top: 15px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.sidebar-list {
+  padding: 0;
+  list-style-type: none;
+}
+
+.sidebar-list-item {
+  padding: 20px 20px 20px 20px;
+  font-size: 18px;
+}
+
+.sidebar-list-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+}
+
+.sidebar-list-item > a {
+  text-decoration: none;
+  color: #9e9ea4;
+}
+
+.sidebar-responsive {
+  display: inline !important;
+  position: absolute;
+  /*
+    we want the z-index of the sidebar higher so that
+    the charts are not showing over the sidebar 
+    on small screens
+  */
+  z-index: 12 !important;
+}
+
+/* End Sidebar  */
+
+
+/* Main  */  
+.main-container {
+  grid-area: main;
+  overflow-y: auto;
+  padding: 20px 20px;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.main-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.main-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 20px;
+  margin: 15px 0;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 8px 15px;
+  border-radius: 5px;
+}
+
+.card:first-child {
+  background-color: #FF8C00;
+}
+
+.card:nth-child(2) {
+  background-color: #FFA726;
+}
+
+.card:nth-child(3) {
+  background-color: #FFC107;
+}
+
+.card:nth-child(4) {
+  background-color: #29B6F6;
+}
+
+.subcard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 8px 15px;
+  border-radius: 5px;
+}
+
+.subcard:first-child {
+  background-color: #6A93C3;
+}
+
+.subcard:nth-child(2) {
+  background-color: #C4878E;
+}
+
+.subcard:nth-child(3) {
+  background-color: #ffb90f;
+}
+
+.subcard:nth-child(4) {
+  background-color: #ab82ff;
+}
+
+.card-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-inner > .card_icon {
+  font-size: 35px;
+}
+
+.card-inner > .subcard_icon {
+  font-size: 45px;
+}
+
+
+.charts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 60px;
+  height: 300px;
+}
+
+.charts-three {
+  display: grid;
+  grid-template-columns: 5fr 10fr 6fr;
+  gap: 20px;
+  margin-top: 60px;
+  height: 300px;
+}
+
+/* End Main  */
+
+
+/* Medium <= 992px */
+  
+@media screen and (max-width: 992px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.2fr 3fr;
+    grid-template-areas:
+      'header'
+      'main';
+  }
+
+  #sidebar {
+    display: none;
+  }
+
+  .menu-icon {
+    display: inline;
+  }
+
+  .sidebar-title > span {
+    display: inline;
+  }
+}
+/* Small <= 768px */
+  
+@media screen and (max-width: 768px) {
+  .main-cards {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-bottom: 0;
+  }
+
+  .charts {
+    grid-template-columns: 1fr;
+    margin-top: 30px;
+  }
+
+  .charts-three {
+    grid-template-columns: 1fr;
+    margin-top: 30px;
+  }
+}
+
+/* Extra Small <= 576px */
+
+@media screen and (max-width: 576px) {
+  .header-left {
+    display: none;
+  }
+}
