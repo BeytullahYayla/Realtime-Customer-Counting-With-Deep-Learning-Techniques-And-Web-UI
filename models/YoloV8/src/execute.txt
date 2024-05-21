@@ -1,1 +1,1 @@
-python detect_from_video.py --video="C:\Users\Beytullah\Desktop\Koçtaş Group Detection\data\group\21.mp4"
+python detect_from_video.py --input="C:\Users\MSI\Desktop\Koçtaş\test_videos\test3.avi" --show --tracking=1 --gpu_in_tracking=1

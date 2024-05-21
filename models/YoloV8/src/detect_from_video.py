@@ -4,19 +4,23 @@ import os
 import time
 import argparse
 import numpy as np
-
 from deep_sort_realtime.deepsort_tracker import DeepSort
-from utils import convert_detections,return_frame_with_count_info
+from tracker import Tracker
+from utils import convert_detections, return_frame_with_count_info, annotate, draw_info
+from classification import CustomerClassification
 from coco_classes import COCO_91_CLASSES
 from ultralytics import YOLO
 
 
-def argparser():
     
+""" Track id değişimi için resimleri karşılaştırma
+
+"""
+def argparser():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--input',
-        default='C:\\Users\\MSI\\Desktop\\Koçtaş\\test_videos\\test7.mp4',
+        type=str,
         help='path to input video',
     )
     parser.add_argument(
@@ -27,30 +31,16 @@ def argparser():
     )
     parser.add_argument(
         '--model',
-        default='last.pt',
+        default='best.pt',
         help='path to YOLOv8 model file'
     )
     parser.add_argument(
         '--threshold',
-        default=0.6,
+        default=0.7,
         help='score threshold to filter out detections',
         type=float
     )
-    parser.add_argument(
-        '--embedder',
-        default='clip_ViT-B/32',
-        help='type of feature extractor to use',
-        choices=[
-            "mobilenet",
-            "torchreid",
-            "clip_RN50",
-            "clip_RN101",
-            "clip_RN50x4",
-            "clip_RN50x16",
-            "clip_ViT-B/32",
-            "clip_ViT-B/16"
-        ]
-    )
+  
     parser.add_argument(
         '--show',
         action='store_true',
@@ -63,25 +53,33 @@ def argparser():
         help='which classes to track',
         type=int
     )
+    parser.add_argument(
+        "--tracking",
+        type=int,
+        default=0
+    )
     args = parser.parse_args()
     return args
-def get_video_writer(filename, frame_width, frame_height, frame_fps):
-    # Uzantıya göre doğru codec ve uzantıyı seç
-    ext = os.path.splitext(filename)[1]
-    if ext.lower() == '.mp4':
-        fourcc = 'mp4v'
-    elif ext.lower() == '.avi':
-        fourcc = 'XVID'
+
+def save_video(frames, fps, size, output_path):
+    # Determine the codec based on the file extension
+    if output_path.endswith('.avi'):
+        fourcc = cv2.VideoWriter_fourcc(*'XVID')  # 'XVID' codec for .avi files
+    elif output_path.endswith('.mp4'):
+        fourcc = cv2.VideoWriter_fourcc(*'XVID')  # 'mp4v' codec for .mp4 files
     else:
-        raise ValueError("Unsupported file extension. Use .mp4 or .avi")
+        raise ValueError("Unsupported file format. Use .avi or .mp4")
 
-    # VideoWriter nesnesini oluştur ve döndür
-    return cv2.VideoWriter(filename, cv2.VideoWriter_fourcc(*fourcc), frame_fps, (frame_width, frame_height))
-
-
-if __name__=="__main__":
+    out = cv2.VideoWriter(output_path, fourcc, fps, size)
+    for frame in frames:
+        out.write(frame)
+    out.release()
+def save_classification_results(cropped_frame,i):
+    image_path=f"cropped\\out_cropped{i}.png"
+    cv2.imwrite(image_path,cropped_frame)
     
-    args=argparser()
+if __name__ == "__main__":
+    args = argparser()
     np.random.seed(42)
 
     OUT_DIR = 'outputs'
@@ -90,57 +88,62 @@ if __name__=="__main__":
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     COLORS = np.random.randint(0, 255, size=(len(COCO_91_CLASSES), 3))
 
+    tracked_persons = {}
+
     print(f"Tracking: {[COCO_91_CLASSES[idx] for idx in args.cls]}")
     print(f"Detector: YOLOv8")
-    print(f"Re-ID embedder: {args.embedder}")
 
 
     # Load YOLOv8 model
     model = YOLO(args.model)
     # Initialize a SORT tracker object.
-    tracker = DeepSort(max_age=30, embedder=args.embedder)
+    tracker_without_gpu = Tracker()
+    classiffier=CustomerClassification('models\\weights.h5')
 
     VIDEO_PATH = args.input
     cap = cv2.VideoCapture(VIDEO_PATH)
     frame_width = int(cap.get(3))
     frame_height = int(cap.get(4))
     frame_fps = int(cap.get(5))
+    
+    fps = cap.get(cv2.CAP_PROP_FPS)
     frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     save_name = VIDEO_PATH.split(os.path.sep)[-1].split('.')[0]
-    # Define codec and create VideoWriter object.
-    out = cv2.VideoWriter(
-    f"{OUT_DIR}/{save_name}_{args.model}_{args.embedder}.mp4",
-    cv2.VideoWriter_fourcc(*'mp4v'), frame_fps,
-    (frame_width, frame_height)
-)
- 
 
-    frame_count = 0 # To count total frames.
-    total_fps = 0 # To get the final frames per second.
+    output_path = os.path.join(OUT_DIR, f"{save_name}_output.avi")
+    processed_frames = []
+
+    frame_count = 0  # To count total frames.
+    total_fps = 0  # To get the final frames per second.
+
+    total_person_count = 0
+    tracked_persons = {}
+    classification_results=[]
     
-    total_person_count=0
-    tracked_persons={}
-
+      # Define the codec and create a VideoWriter object
+    fourcc = cv2.VideoWriter_fourcc(*'XVID')  # You can use other codecs such as 'MJPG', 'X264', etc.
+    output_video_path = 'output_video.avi'  # Choose the desired output video file path
+    out = cv2.VideoWriter(output_video_path, fourcc, fps, (640, 640))  # Use the same fps as input video
+   
     while cap.isOpened():
         # Read a frame
         ret, frame = cap.read()
         if ret:
-            if args.imgsz != None:
+            if args.imgsz is not None:
                 resized_frame = cv2.resize(frame, (args.imgsz, args.imgsz))
+                resized_frame_empty=resized_frame.copy()
             else:
                 resized_frame = frame
+            
             resized_frame_rgb = cv2.cvtColor(resized_frame, cv2.COLOR_BGR2RGB)
-
+            cv2.line(resized_frame,(0,160),(640,160),(0,255,0),1)
             start_time = time.time()
             # Feed frame to YOLOv8 model and get detections.
-            det_start_time = time.time()
             results = model(resized_frame_rgb, conf=args.threshold)
-            det_end_time = time.time()
 
-            det_fps = 1 / (det_end_time - det_start_time)
-        
             # Convert detections to Deep SORT format.
-            detections = convert_detections(results[0], args.threshold)
+            detections_gpu_converted = convert_detections(results[0], args.threshold)
+            dets = []
             # Iterate over the detected boxes
             for i in range(len(results[0])):
                 box = results[0].boxes[i]  # Get the i-th detected box
@@ -149,73 +152,58 @@ if __name__=="__main__":
                 bb = box.xyxy.cpu().numpy()[0]  # Get the bounding box coordinates
 
                 # Only consider detections with a confidence score above the threshold
-                if conf > args.threshold:
-                    x1 = int(bb[0])
-                    y1 = int(bb[1])
-                    x2 = int(bb[2])
-                    y2 = int(bb[3])
-                    cv2.rectangle(resized_frame,(x1,y1),(x2,y2),(0,255,0),2)
-        
+                x1 = int(bb[0])
+                y1 = int(bb[1])
+                x2 = int(bb[2])
+                y2 = int(bb[3])
+                dets.append([x1, y1, x2, y2, conf])
+                cv2.rectangle(resized_frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
             
-            # Update tracker with detections.
-            track_start_time = time.time()
-            
-            if detections is not None:
-                
-                tracks = tracker.update_tracks(detections, frame=resized_frame)
-                for track in tracks:
+            if args.tracking == 1:
+                tracker_without_gpu.update(resized_frame, dets)
+                for track in tracker_without_gpu.tracks:
+                    p_bbox = list(map(int, track.bbox))
+                    x1, y1, x2, y2 = p_bbox
                     track_id = track.track_id
-                    bbox = track.to_tlbr()
-                    x_center=int((bbox[0]+bbox[2])/2)
-                    y_center=int((bbox[1]+bbox[3])/2)
-                    
-                    if track_id  not in tracked_persons:
-                        if y_center>160:
-                            tracked_persons[track_id]=True
-                            total_person_count+=1
+                    center_x = int((x1 + x2) / 2)
+                    center_y = int((y1 + y2) / 2)
+                    draw_info(resized_frame, track_id, p_bbox)
+                    if track_id not in tracked_persons:  # Eğer takip edilen kişi takip edilmiyorsa
+                        if center_y >= 160:  # Eğer kişi çizgiyi geçtiyse
+                            tracked_persons[track_id] = True  # Takip edildi olarak işaretle
+                            cropped_image=resized_frame_empty[y1:y2,x1:x2]
+                            
+                            save_classification_results(cropped_image,track_id)
+                            resized_image=cv2.resize(cropped_image,(224,224))
+                            result=classiffier.classification(resized_image)
+                            classification_results.append(result)
+                            total_person_count += 1  # İnsan sayısını artır
+
                         
-                      # Get the bounding box coordinates [top_left_x, top_left_y, bottom_right_x, bottom_right_y]
-                    
-                    cv2.putText(
-                        resized_frame,
-                        f"Track ID: {track_id}",
-                        (int(bbox[0]), int(bbox[1]) - 10),  # Position the text slightly above the top-left corner of the bounding box
-                        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                        fontScale=0.5,
-                        color=(0, 255, 0),  # Green color for the text
-                        thickness=2,
-                        lineType=cv2.LINE_AA
-                    )
-                    
-                
-                
-                track_end_time = time.time()
-                track_fps = 1 / (track_end_time - track_start_time)
 
-                end_time = time.time()
-                fps = 1 / (end_time - start_time)
-            # Add `fps` to `total_fps`.
-                total_fps += fps
-            # Increment frame count.
-                frame_count += 1
-
-                print(f"Frame {frame_count}/{frames}",
-                    f"Detection FPS: {det_fps:.1f},",
-                    f"Tracking FPS: {track_fps:.1f}, Total FPS: {fps:.1f}")
-           
-                
-            out.write(resized_frame)
+            processed_frames.append(resized_frame)
+            end_time = time.time()  # İşlem bitiş zamanını kaydet
+            elapsed_time = end_time - start_time  # Geçen süreyi hesapla
+            fps = 1 / elapsed_time  # FPS değerini hesapla
+            fps = "{:.2f}".format(fps)
+            draw_frame_text=return_frame_with_count_info(resized_frame,total_person_count,fps)
+            out.write(draw_frame_text)
             if args.show:
-                # Display or save output frame.
+                # Display output frame.
                 cv2.imshow("Output", resized_frame)
                 # Press q to quit.
                 if cv2.waitKey(1) & 0xFF == ord("q"):
                     break
         else:
             break
-        
+
+    # Save the video with processed frames
+    # save_video(processed_frames, frame_fps, (frame_width, frame_height), output_path)
+
     # Release resources.
     print(total_person_count)
+    print(tracked_persons)
+    print(classification_results)
     cap.release()
     cv2.destroyAllWindows()
     out.release()

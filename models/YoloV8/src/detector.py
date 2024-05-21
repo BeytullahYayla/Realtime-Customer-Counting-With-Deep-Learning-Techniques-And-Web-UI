@@ -30,7 +30,7 @@ class YOLOv8Detector:
                 y2=int(bb[3])
                 
                 
-                detections.append([x1,x2,y1,y2,clsID,conf])
+                detections.append([x1,x2,y1,y2,conf])
                 
         
         return detections,detect_params

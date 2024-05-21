@@ -24,7 +24,7 @@ def draw_info(frame, track_id, p_bbox):
     color = (0, 0, 255) 
     
     cv2.putText(frame, res_text, (p_bbox[0]-5, p_bbox[1]-5), cv2.FONT_HERSHEY_SIMPLEX,
-        0.50, (255, 255, 255), 1, cv2.LINE_AA)
+       2, (255, 255, 255), 1, cv2.LINE_AA)
 
 def return_frame_with_count_info(frame,person_count:int,fps):
 
@@ -39,7 +39,36 @@ def return_frame_with_count_info(frame,person_count:int,fps):
     frame_with_text = cv2.putText(frame, text, org, font, fontScale, color, thickness, cv2.LINE_AA)
     frame_with_text = cv2.putText(frame_with_text,text_fps,org_fps,font,fontScale,color,thickness,cv2.LINE_AA)
     return frame_with_text
-
+# Function for bounding box and ID annotation.
+def annotate(tracks, frame, resized_frame, frame_width, frame_height):
+    for track in tracks:
+        if not track.is_confirmed():
+            continue
+        track_id = track.track_id
+        track_class = track.det_class
+        x1, y1, x2, y2 = track.to_ltrb()
+        p1 = (int(x1/resized_frame.shape[1]*frame_width), int(y1/resized_frame.shape[0]*frame_height))
+        p2 = (int(x2/resized_frame.shape[1]*frame_width), int(y2/resized_frame.shape[0]*frame_height))
+        # Annotate boxes.
+        color =(0,255,0)
+        cv2.rectangle(
+            frame,
+            p1,
+            p2,
+            color=(int(color[0]), int(color[1]), int(color[2])),
+            thickness=2
+        )
+        # Annotate ID.
+        cv2.putText(
+            frame, f"ID: {track_id}",
+            (p1[0], p1[1] - 10),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.5,
+            (0, 255, 0),
+            2,
+            lineType=cv2.LINE_AA
+        )
+    return frame
 def convert_detections(yolo_detections, threshold):
     """
     Convert YOLOv8 detections to Deep SORT format.
