@@ -5,17 +5,14 @@ import time
 import argparse
 import numpy as np
 from deep_sort_realtime.deepsort_tracker import DeepSort
+from database import CustomerCountingDatabase
 from tracker import Tracker
 from utils import convert_detections, return_frame_with_count_info, annotate, draw_info
 from classification import CustomerClassification
 from coco_classes import COCO_91_CLASSES
 from ultralytics import YOLO
+import configparser
 
-
-    
-""" Track id değişimi için resimleri karşılaştırma
-
-"""
 def argparser():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -54,6 +51,10 @@ def argparser():
         type=int
     )
     parser.add_argument(
+        '--store_name',
+        type=str
+    )
+    parser.add_argument(
         "--tracking",
         type=int,
         default=0
@@ -61,24 +62,36 @@ def argparser():
     args = parser.parse_args()
     return args
 
-def save_video(frames, fps, size, output_path):
-    # Determine the codec based on the file extension
-    if output_path.endswith('.avi'):
-        fourcc = cv2.VideoWriter_fourcc(*'XVID')  # 'XVID' codec for .avi files
-    elif output_path.endswith('.mp4'):
-        fourcc = cv2.VideoWriter_fourcc(*'XVID')  # 'mp4v' codec for .mp4 files
-    else:
-        raise ValueError("Unsupported file format. Use .avi or .mp4")
-
-    out = cv2.VideoWriter(output_path, fourcc, fps, size)
-    for frame in frames:
-        out.write(frame)
-    out.release()
 def save_classification_results(cropped_frame,i):
     image_path=f"cropped\\out_cropped{i}.png"
     cv2.imwrite(image_path,cropped_frame)
+def read_ini_file(file_path):
+    config = configparser.ConfigParser()
+    config.read(file_path)
     
+    stores = {}
+    for section in config.sections():
+        stores[section] = {
+            'store_name':config.get(section,"store_name"),
+            'x1': config.getint(section, 'x1'),
+            'y1': config.getint(section, 'y1'),
+            'x2': config.getint(section, 'x2'),
+            'y2': config.getint(section, 'y2')
+        }
+    return stores
+
+
+def check_store_name(init_dict:dict):
+    for key,param in init_dict.items():
+        print(key)
+        print(param)
+        db.update_store_info(param["store_name"])
+        
+            
+    
+     
 if __name__ == "__main__":
+    
     args = argparser()
     np.random.seed(42)
 
@@ -93,11 +106,27 @@ if __name__ == "__main__":
     print(f"Tracking: {[COCO_91_CLASSES[idx] for idx in args.cls]}")
     print(f"Detector: YOLOv8")
 
-
+    #Read ini file
+    init_dict=read_ini_file("customer_counting.ini")
+    line_configs=init_dict[args.store_name]
+    #Initialize Db
+    db = CustomerCountingDatabase(
+    host="localhost",      # Docker konteyneri localhost üzerinden erişilebiliyorsa
+    user="root",
+    password="Beytullah.123",
+    db_name="person_count_database2",
+    port=3306              # MySQL'in çalıştığı port
+    )
+    
+    #Add database to store name if it is not exist!
+    check_store_name(init_dict)
+         
     # Load YOLOv8 model
     model = YOLO(args.model)
     # Initialize a SORT tracker object.
     tracker_without_gpu = Tracker()
+
+    #load classification model
     classiffier=CustomerClassification('models\\weights.h5')
 
     VIDEO_PATH = args.input
@@ -116,15 +145,27 @@ if __name__ == "__main__":
     frame_count = 0  # To count total frames.
     total_fps = 0  # To get the final frames per second.
 
+    woman_count=0
+    man_count=0
+    employee_count=0
+    kid_count=0
+    staff_count=0
     total_person_count = 0
-    tracked_persons = {}
-    classification_results=[]
     
+    tracked_persons = {}
+    classification_results={}
+    classification_count_results={'Woman':0, 'Man': 0, 'Kid': 0, 'Employee': 0, 'Staff': 0}
+    
+    # tracking_infos={}
+    
+    
+    print(line_configs)
+   
       # Define the codec and create a VideoWriter object
     fourcc = cv2.VideoWriter_fourcc(*'XVID')  # You can use other codecs such as 'MJPG', 'X264', etc.
     output_video_path = 'output_video.avi'  # Choose the desired output video file path
     out = cv2.VideoWriter(output_video_path, fourcc, fps, (640, 640))  # Use the same fps as input video
-   
+    
     while cap.isOpened():
         # Read a frame
         ret, frame = cap.read()
@@ -136,7 +177,9 @@ if __name__ == "__main__":
                 resized_frame = frame
             
             resized_frame_rgb = cv2.cvtColor(resized_frame, cv2.COLOR_BGR2RGB)
-            cv2.line(resized_frame,(0,160),(640,160),(0,255,0),1)
+            #Draw Counting Line
+            cv2.line(resized_frame,(line_configs["x1"],line_configs["y1"]),(line_configs["x2"],line_configs["y2"]),(0,255,0),1)
+            #Start time to calculate fps
             start_time = time.time()
             # Feed frame to YOLOv8 model and get detections.
             results = model(resized_frame_rgb, conf=args.threshold)
@@ -167,25 +210,40 @@ if __name__ == "__main__":
                     track_id = track.track_id
                     center_x = int((x1 + x2) / 2)
                     center_y = int((y1 + y2) / 2)
+                    
                     draw_info(resized_frame, track_id, p_bbox)
+            
                     if track_id not in tracked_persons:  # Eğer takip edilen kişi takip edilmiyorsa
-                        if center_y >= 160:  # Eğer kişi çizgiyi geçtiyse
+                        if center_y >= 350:  # Eğer kişi çizgiyi geçtiyse
                             tracked_persons[track_id] = True  # Takip edildi olarak işaretle
                             cropped_image=resized_frame_empty[y1:y2,x1:x2]
-                            
-                            save_classification_results(cropped_image,track_id)
                             resized_image=cv2.resize(cropped_image,(224,224))
                             result=classiffier.classification(resized_image)
-                            classification_results.append(result)
+                            classification_count_results[result]+=1
+                            StoreName = args.store_name
+                            ManCount = classification_count_results["Man"]
+                            WomanCount = classification_count_results["Woman"]
+                            KidCount = classification_count_results["Kid"]
+                            StaffCount = classification_count_results["Staff"]
+                            EmployeeCount = classification_count_results["Employee"]
+                            TotalCount = ManCount + WomanCount + KidCount + StaffCount + EmployeeCount
+                            db.update_count_info(store_name=args.store_name,man_count=ManCount,woman_count=WomanCount,kid_count=KidCount,staff_count=StaffCount,employee_count=EmployeeCount,total_count=TotalCount)
+                            classification_results[track_id]=result
+                            
+                            
+                            # save_classification_results(cropped_image,track_id)
+                            
                             total_person_count += 1  # İnsan sayısını artır
+                        
 
                         
 
-            processed_frames.append(resized_frame)
             end_time = time.time()  # İşlem bitiş zamanını kaydet
             elapsed_time = end_time - start_time  # Geçen süreyi hesapla
-            fps = 1 / elapsed_time  # FPS değerini hesapla
-            fps = "{:.2f}".format(fps)
+            if elapsed_time!=0:
+                
+                fps = 1 / elapsed_time  # FPS değerini hesapla
+                fps = "{:.2f}".format(fps)
             draw_frame_text=return_frame_with_count_info(resized_frame,total_person_count,fps)
             out.write(draw_frame_text)
             if args.show:
@@ -197,13 +255,12 @@ if __name__ == "__main__":
         else:
             break
 
-    # Save the video with processed frames
-    # save_video(processed_frames, frame_fps, (frame_width, frame_height), output_path)
 
-    # Release resources.
-    print(total_person_count)
-    print(tracked_persons)
+
     print(classification_results)
+    print(classification_count_results)
+    db.close()
     cap.release()
     cv2.destroyAllWindows()
     out.release()
+ 

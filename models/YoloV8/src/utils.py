@@ -16,6 +16,8 @@ def overlap(p_bbox, r_bbox):
     overlap = interArea / boxAArea
     return overlap
 
+# def draw_line_and_area(frame):
+    
 
 def draw_info(frame, track_id, p_bbox):
     res_text = f"Tid:{track_id}"
