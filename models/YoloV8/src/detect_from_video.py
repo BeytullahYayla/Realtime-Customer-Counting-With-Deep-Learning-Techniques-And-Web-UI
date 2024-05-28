@@ -214,7 +214,7 @@ if __name__ == "__main__":
                     draw_info(resized_frame, track_id, p_bbox)
             
                     if track_id not in tracked_persons:  # Eğer takip edilen kişi takip edilmiyorsa
-                        if center_y >= 350:  # Eğer kişi çizgiyi geçtiyse
+                        if center_y >= line_configs ["y1"]:  # Eğer kişi çizgiyi geçtiyse
                             tracked_persons[track_id] = True  # Takip edildi olarak işaretle
                             cropped_image=resized_frame_empty[y1:y2,x1:x2]
                             resized_image=cv2.resize(cropped_image,(224,224))

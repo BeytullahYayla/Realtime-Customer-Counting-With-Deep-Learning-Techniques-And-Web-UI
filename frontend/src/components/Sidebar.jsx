@@ -1,8 +1,18 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import { BsJournalBookmarkFill, BsGrid1X2Fill, BsCalendarMonthFill, BsFillGearFill, BsPersonFillLock, BsCalendarFill } from 'react-icons/bs'
+import { BsFillPersonLinesFill, BsJournalBookmarkFill, BsGrid1X2Fill, BsCalendarMonthFill, BsPersonFillLock, BsCalendarFill, BsBoxArrowRight } from 'react-icons/bs'
+import { getUserRole } from '../data/Fetch';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 function Sidebar({ openSidebarToggle, OpenSidebar }) {
+    const role = getUserRole()
+
+    const handleLogout = () => {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('username');
+        window.location.reload();
+    };
+
     return (
         <aside id="sidebar" className={openSidebarToggle ? "sidebar-responsive" : ""}>
             <div className='sidebar-title'>
@@ -33,11 +43,19 @@ function Sidebar({ openSidebarToggle, OpenSidebar }) {
                         <BsJournalBookmarkFill className='icon' /> Records
                     </Link>
                 </li>
-                <li className='sidebar-list-item'>
-                    <Link to="/Settings">
-                        <BsFillGearFill className='icon' /> Setting
-                    </Link>
+                {
+                    role === "superuser" ?
+                        (<li className='sidebar-list-item'>
+                            <Link to="/UserManagement">
+                                <BsFillPersonLinesFill className='icon' /> User Management
+                            </Link>
+                        </li>)
+                        : ""
+                }
+                <li className='sidebar-list-item logout-item' onClick={handleLogout} style={{ marginTop: 'auto' }}>
+                    <LogoutIcon className='icon' /> Logout
                 </li>
+
             </ul>
         </aside>
     )

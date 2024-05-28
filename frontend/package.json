@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^13.5.0",
     "apexcharts": "^3.47.0",
     "axios": "^1.6.8",
+    "jwt-decode": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.2.1",

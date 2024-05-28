@@ -1,0 +1,88 @@
+.login-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to bottom right, #c71585 , #ff7f50 , #87ceeb, #8a2be2);
+    animation: WaveAnimation 10s linear infinite;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    background-size: 200% 200%;
+}
+
+@keyframes WaveAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.login-container {
+    background-color: #fff;
+    padding: 2rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-icon {
+    font-size: 4rem;
+    color: #ee7621;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login-container h2 {
+    margin-bottom: 3rem;
+    color: #333;
+    text-align: center;
+    font-weight: bold; /* Kalın yazı */
+}
+
+.login-container label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #555;
+}
+
+.login-container input[type="text"],
+.login-container select,
+.login-container input[type="email"],
+.login-container input[type="password"] {
+    width: calc(100% - 2rem);
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.login-container button {
+    width: calc(100% - 4rem);
+    padding: 0.75rem;
+    border: none;
+    border-radius: 20px;
+    background: linear-gradient(to right, #ee7621, #ee9a49, #ee7621); /* Kenarlarda koyu turuncu, ortada açık turuncu gradient */
+    color: #fff;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: block;
+    margin: 3rem auto 1rem;
+}
+
+.login-container button:hover {
+    background: linear-gradient(to right, #ff7f24, #ffa54f, #ff7f24); /* Hover durumunda gradient */
+}
+
+

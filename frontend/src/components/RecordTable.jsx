@@ -2,7 +2,7 @@ import React from 'react'
 import { DataGrid, GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridToolbarExport } from '@mui/x-data-grid';
 
 const columns = [
-    { field: 'id', headerName: '#', flex: 1, align: 'center', headerAlign: 'center' },
+    { field: 'id', headerName: '#', flex: 0.5, align: 'center', headerAlign: 'center' },
     { field: 'DateTime', headerName: 'Date', flex: 1, align: 'center', headerAlign: 'center' },
     { field: 'ManCount', headerName: 'Man', type: 'number', flex: 1, align: 'center', headerAlign: 'center' },
     { field: 'WomanCount', headerName: 'Woman', type: 'number', flex: 1, align: 'center', headerAlign: 'center' },
@@ -45,6 +45,18 @@ const RecordTable = ({data}) => {
                 }}*/
                 pageSizeOptions={[7, 14, 20, 30]}
                 checkboxSelection
+                slotProps={{
+                    pagination: {
+                        sx: {
+                            '& .MuiTablePagination-displayedRows': {
+                                color: '#1d2634', fontFamily: 'Archivo' 
+                            },
+                            '& .MuiTablePagination-selectLabel': {
+                                color: '#1d2634', fontFamily: 'Archivo' 
+                            },
+                        },
+                    },
+                }}
             />
         </div>
     )

@@ -30,6 +30,7 @@ body {
   line-height: 1px;
   font-size: 26px;
 }
+
 .icon, .icon_header {
   margin-right: 5px;
 }
@@ -62,8 +63,32 @@ body {
   box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
 }
 
+.header-center {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .menu-icon {
   display: none;
+}
+
+.tooltip {
+  position: absolute;
+  top: 1rem;
+  right: 5rem;
+  background-color: #777;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+}
+
+.person-icon {
+  font-size: 2rem;
+  color: #cdc9c9;
 }
 /* End Header  */
 
@@ -97,6 +122,7 @@ body {
 
 .sidebar-list {
   padding: 0;
+  margin-top: 2rem;
   list-style-type: none;
 }
 
@@ -118,12 +144,20 @@ body {
 .sidebar-responsive {
   display: inline !important;
   position: absolute;
-  /*
-    we want the z-index of the sidebar higher so that
-    the charts are not showing over the sidebar 
-    on small screens
-  */
   z-index: 12 !important;
+}
+
+.logout-item {
+  background-color: #e74c3c;
+  color: #ddd;
+  /*cursor: pointer;
+  padding: 0.75rem;
+  border-radius: 8px;
+  text-align: center;*/
+}
+
+.logout-item:hover {
+  background-color: #c0392b;
 }
 
 /* End Sidebar  */
@@ -272,12 +306,20 @@ body {
     grid-template-columns: 1fr;
     margin-top: 30px;
   }
+
+  .tooltip {
+    display: none;
+  }
 }
 
 /* Extra Small <= 576px */
 
 @media screen and (max-width: 576px) {
   .header-left {
+    display: none;
+  }
+
+  .tooltip {
     display: none;
   }
 }

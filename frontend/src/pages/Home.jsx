@@ -98,7 +98,7 @@ function Home({ storeName, setLoadingByDateRange }) {
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="DateTime" />
                             <YAxis />
-                            <Tooltip contentStyle={{color:'rgba(64,64,64,0.8)'}} />
+                            <Tooltip contentStyle={{backgroundColor:'rgba(64,64,64,0.8)'}} />
                             <Legend />
                             <Bar dataKey="ManCount" fill="#87CEEB" activeBar={<Rectangle fill="#6A93C3" stroke="#FFD700" />} />
                             <Bar dataKey="WomanCount" fill="#FFC0CB" activeBar={<Rectangle fill="#C4878E" stroke="#FFD700" />} />
@@ -120,7 +120,7 @@ function Home({ storeName, setLoadingByDateRange }) {
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="DateTime" />
                             <YAxis />
-                            <Tooltip contentStyle={{color:'rgba(64,64,64,0.8)'}} />
+                            <Tooltip contentStyle={{backgroundColor:'rgba(64,64,64,0.8)'}} />
                             <Legend />
                             <Bar dataKey="TotalCustomers" stackId="1" fill="#80C986" activeBar={<Rectangle fill="#689775" stroke="#FFD700" />} />
                             <Bar dataKey="TotalWorkers" stackId="1" fill="#ab82ff" activeBar={<Rectangle fill="#5d478b" stroke="#FFD700" />} />

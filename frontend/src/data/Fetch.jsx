@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import {jwtDecode} from 'jwt-decode';
 
 let data = []
 let stores = []
@@ -7,6 +8,7 @@ let lastThreeMonthData = []
 let lastMonthData = []
 let lastWeekData = []
 let todayData = []
+let users = []
 
 export function setData(newData){
   data = newData;
@@ -32,6 +34,10 @@ export function setStores(newStores){
   stores = newStores
 }
 
+export function setUsers(newUsers){
+  users = newUsers
+}
+
 export function getData(){
   return data;
 }
@@ -54,6 +60,20 @@ export function getTodayData(){
 
 export function getStores(){
   return stores;
+}
+
+export function getUsers(){
+  return users;
+}
+
+let userRole = localStorage.getItem('access_token') ? jwtDecode(localStorage.getItem('access_token')).role : ""
+
+export function setUserRole(newUserRole){
+  userRole = newUserRole;
+}
+
+export function getUserRole(){
+  return userRole;
 }
 
 export const useData = () => {
@@ -108,4 +128,17 @@ export const useStores = () => {
   };
 
   return { fetchStores };
+};
+
+export const useUsers = () => {
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8000/users`);
+      setUsers(response.data);
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
+
+  return { fetchUsers };
 };

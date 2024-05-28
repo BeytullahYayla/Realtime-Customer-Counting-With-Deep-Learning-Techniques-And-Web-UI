@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel
 from datetime import date
 
@@ -23,3 +24,27 @@ class CountsGetResponseByDateRange(BaseModel):
 
 class StoresGetResponse(BaseModel):
     Name : str
+
+class UsersGetResponse(BaseModel):
+    Username : str
+    Email : str
+    Role : str
+    IsEnable : str
+
+class UserCreateRequest(BaseModel):
+    Username : str
+    Email : str
+    Password : str
+    SuperUser : Optional[bool] = False
+
+class UserPatchRequest(BaseModel):
+    Username : str
+    Email : str
+    
+class UserLoginRequest(BaseModel):
+    Email : str
+    Password : str
+
+class UserPasswordRequest(BaseModel):
+    OldPassword : str
+    NewPassword : str

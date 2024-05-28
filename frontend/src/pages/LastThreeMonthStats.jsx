@@ -113,7 +113,7 @@ const LastThreeMonthStats = ({storeName, setLoadingByDateRange }) => {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="DateTime" />
               <YAxis />
-              <Tooltip contentStyle={{color:'rgba(64,64,64,0.8)'}} />
+              <Tooltip contentStyle={{backgroundColor:'rgba(64,64,64,0.8)'}} />
               <Legend />
               <Area type="monotone" dataKey="ManCount" stackId="1" stroke="#6A93C3" fill="#87CEEB" activeDot={{ r: 15 }} />
               <Area type="monotone" dataKey="WomanCount" stackId="1" stroke="#C4878E" fill="#FFC0CB" activeDot={{ r: 15 }} />
@@ -136,7 +136,7 @@ const LastThreeMonthStats = ({storeName, setLoadingByDateRange }) => {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="day" />
               <YAxis />
-              <Tooltip contentStyle={{color:'rgba(64,64,64,0.8)'}} />
+              <Tooltip contentStyle={{backgroundColor:'rgba(64,64,64,0.8)'}} />
               <Legend />
               <Bar dataKey="TotalCustomers" stackId="1" fill="#80C986" activeBar={<Rectangle fill="#689775" stroke="#FFD700" />} />
               <Bar dataKey="TotalWorkers" stackId="1" fill="#ab82ff" activeBar={<Rectangle fill="#5d478b" stroke="#FFD700" />} />            
