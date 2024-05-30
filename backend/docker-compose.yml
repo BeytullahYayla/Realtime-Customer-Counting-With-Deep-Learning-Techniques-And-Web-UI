@@ -16,8 +16,10 @@ services:
     build: ./db/
     image: mysql:latest
     environment:
-      MYSQL_DATABASE: person_count_database
+      MYSQL_DATABASE: person_count_database2
       MYSQL_ROOT_PASSWORD: Beytullah.123 
+    ports:
+      - "3307:3306"  # MySQL servisini 3307 portundan ayağa kaldır
     networks:
       - backend
 
@@ -26,4 +28,3 @@ networks:
   backend:
     driver: bridge
     name: backend
-

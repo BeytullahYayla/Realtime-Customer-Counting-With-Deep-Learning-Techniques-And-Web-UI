@@ -1,1 +1,1 @@
-python detect_from_video.py --input="C:\Users\MSI\Desktop\Koçtaş\test_videos\test10.avi" --show --tracking=1 --threshold=0.7 --store_name="GEBZE"
+python detect_from_video.py --input="C:\Users\MSI\Desktop\Koçtaş\test_videos\for_kısa.mp4" --show --tracking=1 --threshold=0.7 --store_name="FOR"

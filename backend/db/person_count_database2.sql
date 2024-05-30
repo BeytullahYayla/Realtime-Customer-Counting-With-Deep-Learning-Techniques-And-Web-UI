@@ -1,0 +1,38 @@
+CREATE DATABASE IF NOT EXISTS person_count_database2;
+
+USE person_count_database2;
+
+CREATE TABLE Stores (
+    Id CHAR(36) DEFAULT (MD5(UUID())) PRIMARY KEY,
+    Name VARCHAR(255) NOT NULL,
+    UNIQUE (Id),
+    UNIQUE (Name)
+);
+
+CREATE TABLE Counts (
+    Id CHAR(36) DEFAULT (MD5(UUID())) PRIMARY KEY,
+    StoreId CHAR(36),
+    ManCount INT,
+    WomanCount INT,
+    KidCount INT,
+    StaffCount INT,
+    EmployeeCount INT,
+    TotalCount INT,
+    CreatingDateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UpdatingDateTime DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (StoreId) REFERENCES Stores(Id)
+);
+
+CREATE TABLE Users (
+    Id CHAR(36) DEFAULT (MD5(UUID())) PRIMARY KEY,
+    Username VARCHAR(255) NOT NULL,
+	Email VARCHAR(255) NOT NULL,
+    Password CHAR(64) NOT NULL,
+    SuperUser BOOLEAN DEFAULT FALSE,
+	IsActive BOOLEAN DEFAULT TRUE,
+    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE (Id),
+    UNIQUE (Username),
+    UNIQUE (Email)
+);

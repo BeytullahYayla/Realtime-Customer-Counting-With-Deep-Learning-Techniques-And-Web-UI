@@ -4,3 +4,5 @@ python-dotenv==1.0.1
 SQLAlchemy==2.0.30
 pymysql
 cryptography
+passlib
+pyjwt

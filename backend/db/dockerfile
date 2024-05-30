@@ -6,4 +6,4 @@ ENV MYSQL_ROOT_PASSWORD=Beytullah.123
 
 # 3. person_count_database.sql dosyasını Docker imajına kopyala
 #    Bu dosya /docker-entrypoint-initdb.d/ dizinine kopyalanacak ve MySQL başlatıldığında otomatik olarak çalıştırılacak
-COPY ./person_count_database.sql /docker-entrypoint-initdb.d/
+COPY ./person_count_database2.sql /docker-entrypoint-initdb.d/

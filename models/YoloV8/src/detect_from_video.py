@@ -7,11 +7,12 @@ import numpy as np
 from deep_sort_realtime.deepsort_tracker import DeepSort
 from database import CustomerCountingDatabase
 from tracker import Tracker
-from utils import convert_detections, return_frame_with_count_info, annotate, draw_info
+from utils import convert_detections, return_frame_with_count_info, annotate, draw_info,check_store_name,read_ini_file,save_classification_results
 from classification import CustomerClassification
 from coco_classes import COCO_91_CLASSES
 from ultralytics import YOLO
 import configparser
+from constants import *
 
 def argparser():
     parser = argparse.ArgumentParser()
@@ -28,7 +29,7 @@ def argparser():
     )
     parser.add_argument(
         '--model',
-        default='best.pt',
+        default=DETECTION_MODEL_DIR,
         help='path to YOLOv8 model file'
     )
     parser.add_argument(
@@ -62,64 +63,33 @@ def argparser():
     args = parser.parse_args()
     return args
 
-def save_classification_results(cropped_frame,i):
-    image_path=f"cropped\\out_cropped{i}.png"
-    cv2.imwrite(image_path,cropped_frame)
-def read_ini_file(file_path):
-    config = configparser.ConfigParser()
-    config.read(file_path)
-    
-    stores = {}
-    for section in config.sections():
-        stores[section] = {
-            'store_name':config.get(section,"store_name"),
-            'x1': config.getint(section, 'x1'),
-            'y1': config.getint(section, 'y1'),
-            'x2': config.getint(section, 'x2'),
-            'y2': config.getint(section, 'y2')
-        }
-    return stores
-
-
-def check_store_name(init_dict:dict):
-    for key,param in init_dict.items():
-        print(key)
-        print(param)
-        db.update_store_info(param["store_name"])
-        
-            
-    
-     
 if __name__ == "__main__":
     
     args = argparser()
     np.random.seed(42)
 
-    OUT_DIR = 'outputs'
+
     os.makedirs(OUT_DIR, exist_ok=True)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    COLORS = np.random.randint(0, 255, size=(len(COCO_91_CLASSES), 3))
+   
 
     tracked_persons = {}
 
-    print(f"Tracking: {[COCO_91_CLASSES[idx] for idx in args.cls]}")
-    print(f"Detector: YOLOv8")
-
     #Read ini file
-    init_dict=read_ini_file("customer_counting.ini")
+    init_dict=read_ini_file(CONFIG_DIR)
     line_configs=init_dict[args.store_name]
     #Initialize Db
     db = CustomerCountingDatabase(
-    host="localhost",      # Docker konteyneri localhost üzerinden erişilebiliyorsa
-    user="root",
-    password="Beytullah.123",
-    db_name="person_count_database2",
-    port=3306              # MySQL'in çalıştığı port
+    host=HOST,      # Docker konteyneri localhost üzerinden erişilebiliyorsa
+    user=USER,
+    password=PASSWORD,
+    db_name=DB_NAME,
+    port=PORT             # MySQL'in çalıştığı port
     )
     
     #Add database to store name if it is not exist!
-    check_store_name(init_dict)
+    check_store_name(init_dict,db)
          
     # Load YOLOv8 model
     model = YOLO(args.model)
@@ -127,7 +97,7 @@ if __name__ == "__main__":
     tracker_without_gpu = Tracker()
 
     #load classification model
-    classiffier=CustomerClassification('models\\weights.h5')
+    classiffier=CustomerClassification(CLASSIFICATION_MODEL_DIR)
 
     VIDEO_PATH = args.input
     cap = cv2.VideoCapture(VIDEO_PATH)
@@ -156,10 +126,7 @@ if __name__ == "__main__":
     classification_results={}
     classification_count_results={'Woman':0, 'Man': 0, 'Kid': 0, 'Employee': 0, 'Staff': 0}
     
-    # tracking_infos={}
-    
-    
-    print(line_configs)
+
    
       # Define the codec and create a VideoWriter object
     fourcc = cv2.VideoWriter_fourcc(*'XVID')  # You can use other codecs such as 'MJPG', 'X264', etc.
@@ -211,7 +178,7 @@ if __name__ == "__main__":
                     center_x = int((x1 + x2) / 2)
                     center_y = int((y1 + y2) / 2)
                     
-                    draw_info(resized_frame, track_id, p_bbox)
+               
             
                     if track_id not in tracked_persons:  # Eğer takip edilen kişi takip edilmiyorsa
                         if center_y >= line_configs ["y1"]:  # Eğer kişi çizgiyi geçtiyse
@@ -230,12 +197,14 @@ if __name__ == "__main__":
                             db.update_count_info(store_name=args.store_name,man_count=ManCount,woman_count=WomanCount,kid_count=KidCount,staff_count=StaffCount,employee_count=EmployeeCount,total_count=TotalCount)
                             classification_results[track_id]=result
                             
-                            
-                            # save_classification_results(cropped_image,track_id)
-                            
+                
                             total_person_count += 1  # İnsan sayısını artır
                         
-
+                    # Draw the information including classification result if available
+                    if track_id in classification_results:
+                        draw_info(resized_frame, track_id, p_bbox, classification_results[track_id])
+                    else:
+                        draw_info(resized_frame, track_id, p_bbox)
                         
 
             end_time = time.time()  # İşlem bitiş zamanını kaydet
@@ -257,7 +226,7 @@ if __name__ == "__main__":
 
 
 
-    print(classification_results)
+
     print(classification_count_results)
     db.close()
     cap.release()

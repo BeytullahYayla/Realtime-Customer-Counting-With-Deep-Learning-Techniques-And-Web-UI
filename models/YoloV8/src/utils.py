@@ -1,6 +1,7 @@
 import cv2
 import random
 import numpy as np
+import configparser
 color_dict = {0: (0, 0, 255),  # Grup için kırmızı
               1: (255, 0, 0)}  # Person için mavi
 
@@ -19,17 +20,61 @@ def overlap(p_bbox, r_bbox):
 # def draw_line_and_area(frame):
     
 
-def draw_info(frame, track_id, p_bbox):
+def draw_info(frame, track_id, p_bbox, classification_result=None):
+    # Create the text to display, including the classification result if available
     res_text = f"Tid:{track_id}"
-    text_size, _ = cv2.getTextSize(res_text, cv2.FONT_HERSHEY_SIMPLEX,0.75, 1)
-    tw, th = text_size
-    color = (0, 0, 255) 
+    class_text = f"Class:{classification_result}" if classification_result else ""
     
-    cv2.putText(frame, res_text, (p_bbox[0]-5, p_bbox[1]-5), cv2.FONT_HERSHEY_SIMPLEX,
-       2, (255, 255, 255), 1, cv2.LINE_AA)
+    # Adjust font scale and thickness for smaller text
+    font_scale = 0.75
+    thickness = 1
+    
+    # Calculate text sizes
+    text_size_res, _ = cv2.getTextSize(res_text, cv2.FONT_HERSHEY_SIMPLEX, font_scale, thickness)
+    tw_res, th_res = text_size_res
+    text_size_class, _ = cv2.getTextSize(class_text, cv2.FONT_HERSHEY_SIMPLEX, font_scale, thickness)
+    tw_class, th_class = text_size_class
+    
+    # Use white color for the text
+    text_color = (255, 255, 255)  # White
+    # Use green color for the background
+    bg_color = (0, 170, 0)  # Green
+    
+    # Position for the track ID text
+    res_text_pos = (p_bbox[0] - 5, p_bbox[1] - 10)
+    # Position for the classification text below the track ID text
+    class_text_pos = (p_bbox[0] - 5, p_bbox[1] + 20)
+    
+    # Calculate the width of the background rectangle
+    max_text_width = max(tw_res, tw_class)
+    
+    # Draw the background rectangle for track ID text
+    cv2.rectangle(frame, 
+                  (res_text_pos[0], res_text_pos[1] - th_res - 5), 
+                  (res_text_pos[0] + max_text_width + 10, res_text_pos[1] + 5), 
+                  bg_color, 
+                  cv2.FILLED)
+    
+    # Draw the track ID text
+    cv2.putText(frame, res_text, res_text_pos, cv2.FONT_HERSHEY_SIMPLEX,
+                font_scale, text_color, thickness, cv2.LINE_AA)
+
+    if class_text:
+        # Draw the background rectangle for classification text
+        cv2.rectangle(frame, 
+                      (class_text_pos[0], class_text_pos[1] - th_class - 5), 
+                      (class_text_pos[0] + max_text_width + 10, class_text_pos[1] + 5), 
+                      bg_color, 
+                      cv2.FILLED)
+        
+        # Draw the classification text
+        cv2.putText(frame, class_text, class_text_pos, cv2.FONT_HERSHEY_SIMPLEX,
+                    font_scale, text_color, thickness, cv2.LINE_AA)
+
+       
+
 
 def return_frame_with_count_info(frame,person_count:int,fps):
-
     text = f"Person: {person_count}"
     text_fps=f"Fps: {fps}"
     font = cv2.FONT_HERSHEY_SIMPLEX
@@ -114,4 +159,27 @@ def convert_detections(yolo_detections, threshold):
         return detections
 
 
- 
+def save_classification_results(cropped_frame,i):
+    image_path=f"cropped\\out_cropped{i}.png"
+    cv2.imwrite(image_path,cropped_frame)
+def read_ini_file(file_path):
+    config = configparser.ConfigParser()
+    config.read(file_path)
+    
+    stores = {}
+    for section in config.sections():
+        stores[section] = {
+            'store_name':config.get(section,"store_name"),
+            'x1': config.getint(section, 'x1'),
+            'y1': config.getint(section, 'y1'),
+            'x2': config.getint(section, 'x2'),
+            'y2': config.getint(section, 'y2')
+        }
+    return stores
+
+
+def check_store_name(init_dict:dict,db):
+    for key,param in init_dict.items():
+        db.update_store_info(param["store_name"])
+        
+            

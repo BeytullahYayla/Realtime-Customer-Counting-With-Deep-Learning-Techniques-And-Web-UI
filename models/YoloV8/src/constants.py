@@ -1,0 +1,10 @@
+DETECTION_MODEL_DIR="models\\best.pt"
+CLASSIFICATION_MODEL_DIR="models\\weights.h5"
+TRACKING_MODEL_DIR="models\\mars-small128.pb"
+CONFIG_DIR="customer_counting.ini"
+OUT_DIR="outputs"
+HOST = "localhost"
+USER = "root"
+PASSWORD = "Beytullah.123"
+DB_NAME = "person_count_database2"
+PORT = 3307  # Varsayılan MySQL bağlantı noktası

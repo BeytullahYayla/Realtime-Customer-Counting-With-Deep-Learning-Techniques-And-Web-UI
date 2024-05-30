@@ -3,7 +3,7 @@ from deep_sort.tools import generate_detections as gdet
 from deep_sort.deep_sort import nn_matching
 from deep_sort.deep_sort.detection import Detection
 import numpy as np
-
+from constants import TRACKING_MODEL_DIR
 
 class Tracker:
     tracker = None
@@ -14,7 +14,7 @@ class Tracker:
         max_cosine_distance = 0.4
         nn_budget = None
 
-        encoder_model_filename = 'models\\mars-small128.pb'
+        encoder_model_filename = TRACKING_MODEL_DIR
 
         metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)
         self.tracker = DeepSortTracker(metric)

@@ -305,11 +305,19 @@ def get_counts_by_store_name(store_name: str):
         counts_query = text("SELECT ManCount, WomanCount, KidCount, StaffCount, EmployeeCount, TotalCount, DATE_FORMAT(UpdatingDateTime, '%Y-%m-%d') AS DateTime FROM Counts WHERE StoreId = :store_id ORDER BY UpdatingDateTime")
         counts_result = db.execute(counts_query, {"store_id": store_id})
         counts = []
-        for row in counts_result.fetchall():
-            row_dict = row._asdict()
-            row_dict['DateTime'] = datetime.strptime(row_dict['DateTime'], '%Y-%m-%d').strftime('%Y-%m-%d')
-            counts.append(CountsGetResponse(**row_dict))
-        
+
+        rows = counts_result.fetchall()
+        if not rows:
+            today_str = datetime.today().strftime('%Y-%m-%d')
+            counts.append(CountsGetResponse(
+                ManCount=0, WomanCount=0, KidCount=0, StaffCount=0, EmployeeCount=0, TotalCount=0, DateTime=today_str
+            ))
+        else:
+            for row in rows:
+                row_dict = row._asdict()
+                row_dict['DateTime'] = datetime.strptime(row_dict['DateTime'], '%Y-%m-%d').strftime('%Y-%m-%d')
+                counts.append(CountsGetResponse(**row_dict))
+
         return counts
     except Exception as e:
         print("An error occurred:", e)
@@ -331,10 +339,18 @@ def get_counts_by_store_name(store_name: str, date_range: str):
         counts_query = text("SELECT ManCount, WomanCount, KidCount,StaffCount, EmployeeCount, (ManCount+WomanCount+KidCount) AS TotalCustomers, (StaffCount+EmployeeCount) AS TotalWorkers, TotalCount, DATE_FORMAT(UpdatingDateTime, '%Y-%m-%d') AS DateTime FROM Counts WHERE StoreId = :store_id AND UpdatingDateTime >= NOW() - INTERVAL " + date_range  +" ORDER BY UpdatingDateTime")
         counts_result = db.execute(counts_query, {"store_id": store_id})
         counts = []
-        for row in counts_result.fetchall():
-            row_dict = row._asdict()
-            row_dict['DateTime'] = datetime.strptime(row_dict['DateTime'], '%Y-%m-%d').strftime('%Y-%m-%d')
-            counts.append(CountsGetResponseByDateRange(**row_dict))
+
+        rows = counts_result.fetchall()
+        if not rows:
+            today_str = datetime.today().strftime('%Y-%m-%d')
+            counts.append(CountsGetResponseByDateRange(
+                ManCount=0, WomanCount=0, KidCount=0, StaffCount=0, EmployeeCount=0,TotalCustomers=0,TotalWorkers=0, TotalCount=0, DateTime=today_str
+            ))
+        else:
+            for row in rows:
+                row_dict = row._asdict()
+                row_dict['DateTime'] = datetime.strptime(row_dict['DateTime'], '%Y-%m-%d').strftime('%Y-%m-%d')
+                counts.append(CountsGetResponseByDateRange(**row_dict))
         
         return counts
     except Exception as e:
