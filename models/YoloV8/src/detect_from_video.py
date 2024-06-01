@@ -13,6 +13,8 @@ from coco_classes import COCO_91_CLASSES
 from ultralytics import YOLO
 import configparser
 from constants import *
+import logging
+import sys
 
 def argparser():
     parser = argparse.ArgumentParser()
@@ -80,14 +82,18 @@ if __name__ == "__main__":
     init_dict=read_ini_file(CONFIG_DIR)
     line_configs=init_dict[args.store_name]
     #Initialize Db
-    db = CustomerCountingDatabase(
-    host=HOST,      # Docker konteyneri localhost üzerinden erişilebiliyorsa
-    user=USER,
-    password=PASSWORD,
-    db_name=DB_NAME,
-    port=PORT             # MySQL'in çalıştığı port
-    )
-    
+    try:
+        
+        db = CustomerCountingDatabase(
+        host=HOST,      # Docker konteyneri localhost üzerinden erişilebiliyorsa
+        user=USER,
+        password=PASSWORD,
+        db_name=DB_NAME,
+        port=PORT             # MySQL'in çalıştığı port
+        )
+    except Exception as e:
+        logging.error(f"Database connection failed: {e}")
+        sys.exit(1)
     #Add database to store name if it is not exist!
     check_store_name(init_dict,db)
          
