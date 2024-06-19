@@ -74,7 +74,9 @@ class VideoProcessor(QThread):
                 resized_frame = frame
             
             resized_frame_rgb = cv2.cvtColor(resized_frame, cv2.COLOR_BGR2RGB)
-            cv2.line(resized_frame, (line_configs["x1"], line_configs["y1"]), (line_configs["x2"], line_configs["y2"]), (255, 0, 0), 2)
+            if self.tracking==1:
+                
+                cv2.line(resized_frame, (line_configs["x1"], line_configs["y1"]), (line_configs["x2"], line_configs["y2"]), (255, 0, 0), 2)
             
             start_time = time.time()
             results = model(resized_frame_rgb, conf=self.threshold)
@@ -83,6 +85,7 @@ class VideoProcessor(QThread):
             for result in results[0].boxes:
                 if result.conf >= self.threshold:
                     x1, y1, x2, y2 = result.xyxy.cpu().numpy().astype(int).flatten()
+                    cv2.rectangle(resized_frame,(x1,y1),(x2,y2),(0,255,0),2)
                     conf = result.conf.item()
                     dets.append([x1, y1, x2, y2, conf])
 

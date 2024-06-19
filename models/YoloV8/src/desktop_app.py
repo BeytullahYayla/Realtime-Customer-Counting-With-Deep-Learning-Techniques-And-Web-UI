@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QPushButton, QFileDialog, QVBoxLayout, QWidget, QCheckBox, QSpinBox, QHBoxLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QPushButton, QFileDialog, QVBoxLayout, QWidget, QCheckBox, QRadioButton, QButtonGroup
 from constants import *
 from video_processor import VideoProcessor
 
@@ -25,8 +25,6 @@ class MainWindow(QMainWindow):
         self.browse_button.clicked.connect(self.browse_file)
         layout.addWidget(self.browse_button)
 
-        
-
         # Model path
         self.model_path_label = QLabel('YOLO Model Path:')
         layout.addWidget(self.model_path_label)
@@ -35,6 +33,15 @@ class MainWindow(QMainWindow):
         self.model_browse_button = QPushButton('Browse')
         self.model_browse_button.clicked.connect(self.browse_model)
         layout.addWidget(self.model_browse_button)
+
+        # Default model radio button
+        self.default_model_radio = QRadioButton('Use Default Model')
+        self.default_model_radio.clicked.connect(self.toggle_model_input)
+        layout.addWidget(self.default_model_radio)
+
+        # Button group to manage the radio buttons
+        self.model_radio_group = QButtonGroup()
+        self.model_radio_group.addButton(self.default_model_radio)
 
         # Threshold
         self.threshold_label = QLabel('Score Threshold:')
@@ -82,6 +89,14 @@ class MainWindow(QMainWindow):
         container.setLayout(layout)
         self.setCentralWidget(container)
 
+    def toggle_model_input(self):
+        if self.default_model_radio.isChecked():
+            self.model_path_input.setDisabled(True)
+            self.model_browse_button.setDisabled(True)
+        else:
+            self.model_path_input.setDisabled(False)
+            self.model_browse_button.setDisabled(False)
+
     def browse_file(self):
         file_path, _ = QFileDialog.getOpenFileName(self, 'Open Video File')
         if file_path:
@@ -98,7 +113,10 @@ class MainWindow(QMainWindow):
 
         video_path = self.video_path_input.text()
         imgsz = 640
-        model_path = self.model_path_input.text()
+        if self.default_model_radio.isChecked():
+            model_path = DETECTION_MODEL_DIR  # Set your default model path here
+        else:
+            model_path = self.model_path_input.text()
         threshold = float(self.threshold_input.text())
         classes = [int(cls) for cls in self.classes_input.text().split(',')]
         store_name = self.store_name_input.text()
@@ -121,4 +139,3 @@ if __name__ == '__main__':
     mainWindow = MainWindow()
     mainWindow.show()
     sys.exit(app.exec_())
-
