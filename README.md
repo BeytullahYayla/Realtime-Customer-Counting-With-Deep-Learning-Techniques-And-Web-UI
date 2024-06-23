@@ -59,6 +59,32 @@ Human tracking is performed using the DeepSort (Simple Online Realtime Tracking)
 ### User-Interactive Interface
 The project's frontend was developed using ReactJS to provide a user-friendly web interface. The web interface visualizes in-store customer data and provides managers with the necessary information to make strategic decisions. Communication with the backend is facilitated via API, providing real-time data flow to the user. This allows store managers to easily monitor customer traffic, demographic information, and other vital data.
 
+<p align="center">
+  <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/ee9118ad-6312-45ce-8be9-bae3355251fc" alt="Image 1">
+  <br>
+  <b>Image 1: Login Page</b>
+</p>
+
+<p align="center">
+  <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/a650d95f-bbd8-497f-9d62-cdc0fd4e1ea6" alt="Image 2">
+  <br>
+  <b>Image 2: Dashboard</b>
+</p>
+
+<p align="center">
+  <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/08703fa7-9df4-4e09-82ff-88e5a0d17beb" alt="Image 3">
+  <br>
+  <b>Image 3: Last Month Informations Dashboard </b>
+</p>
+
+<p align="center">
+  <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/baf2406b-9e2e-4ea1-8215-0ea68c3dca3b" alt="Image 4">
+  <br>
+  <b>Image 4: User Management Page</b>
+</p>
+
+
+
 ## Flowcharts
 
 - Customer Counting Algorithm Flowchart
