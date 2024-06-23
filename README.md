@@ -1,5 +1,17 @@
 # Real-Time Customer Counting Using Deep Learning Techniques
 
+## 🚩 Contents
+- [Project Overview](#project-overview)
+- [Technologies Used](#technologies-used)
+- [Features](#features)
+  * [Customer Detection](#customer-detection)
+  * [Customer Counting Algorithm](#customer-counting-algorithm)
+  * [Customer Classification](#customer-classification)
+  * [Customer Tracking](#customer-tracking)
+  * [User-Interactive Interface](#user-interactive-interface)
+- [Flowcharts](#flowcharts)
+- [Contact Information](#contact-information)
+
 ## Project Overview
 
 This project focuses on utilizing images captured by in-store security cameras to perform various analyses. The application offers store managers essential functions such as customer detection, classification based on demographic characteristics, and customer counting. The customer detection function determines the number of people entering and exiting the store, while the classification feature groups customers by age, gender, and other demographics. The counting function monitors customer density in the store at specific time intervals. All these data are presented to store managers via a user-friendly web interface, enabling a detailed analysis of store performance and customer behavior. This allows managers to make more informed and data-driven operational decisions. Our application uses modern computer vision and machine learning techniques to provide real-time and historical data analyses, thereby enhancing store management efficiency and effectiveness.
