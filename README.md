@@ -30,7 +30,8 @@ This project focuses on utilizing images captured by in-store security cameras t
 ### Customer Detection
 Using deep learning and computer vision techniques, customer detection is implemented with the YOLOv8 algorithm. YOLOv8 is an algorithm that uses a convolutional neural network (CNN) to detect objects in real-time, offering high accuracy and speed. Approximately 90,000 training data were used for object detection in the project.
 
-![image](https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/3e70be26-ab7c-4969-8735-3be43e52aac2)
+![Uploading image.png…]()
+
 
 ![person-detection-retail-0013](https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/8820ac34-efae-4351-a2b3-762a76dc828b)
 
