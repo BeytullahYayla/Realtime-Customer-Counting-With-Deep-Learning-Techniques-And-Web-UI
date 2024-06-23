@@ -71,8 +71,9 @@ The project's frontend was developed using ReactJS to provide a user-friendly we
   <b>Image 2: Dashboard</b>
 </p>
 
+
 <p align="center">
-  <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/08703fa7-9df4-4e09-82ff-88e5a0d17beb" alt="Image 3">
+  <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/3e633fea-4787-4419-982b-ea8700f221fc" alt="Image 3">
   <br>
   <b>Image 3: Last Month Informations Dashboard </b>
 </p>
