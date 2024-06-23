@@ -30,57 +30,80 @@ This project focuses on utilizing images captured by in-store security cameras t
 ### Customer Detection
 Using deep learning and computer vision techniques, customer detection is implemented with the YOLOv8 algorithm. YOLOv8 is an algorithm that uses a convolutional neural network (CNN) to detect objects in real-time, offering high accuracy and speed. Approximately 90,000 training data were used for object detection in the project.
 
-![Uploading image.png…]()
+<p align="center">
+  <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/2d727e1d-0d5c-4591-90e6-92b5ed637969" alt="Image 1" width="600">
+  <br>
+  <b>Image 1: YoloV8 Architecture</b>
+</p>
 
+<p align="center">
+  <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/8820ac34-efae-4351-a2b3-762a76dc828b" alt="Image 2" width="600">
+  <br>
+  <b>Image 2: Example Detection Results </b>
+</p>
 
-![person-detection-retail-0013](https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/8820ac34-efae-4351-a2b3-762a76dc828b)
 
 
 ### Customer Counting Algorithm
 The customer counting algorithm aims to determine the number of customers in the store in real-time using deep learning and computer vision techniques. In this project, YOLOv8 and DeepSort algorithms were used together. Initially, the YOLOv8 algorithm detects individuals in the store. Then, the DeepSort algorithm tracks the detected individuals and assigns a unique identity to each person. This way, the number of people entering and exiting the store is determined and recorded based on the movements of the detected and tracked individuals. This method provides necessary data to store managers by monitoring customer density and movements in the store.
 
-![Customer_Counting](https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/51371a0b-a60b-4d9f-aee1-f929a9e79d3b)
 
+
+<p align="center">
+  <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/51371a0b-a60b-4d9f-aee1-f929a9e79d3b" alt="Screenshot_1" width="600">
+  <br>
+  <b>Screenshot 1: Customer Counting Algorithm Flowchart</b>
+</p>
 
 
 ### Customer Classification
 Customer classification is performed using deep learning and image processing techniques. In this project, a customer classification model was developed using the MobileNetV2 architecture. MobileNetV2 is a lightweight and efficient CNN architecture designed for image applications, especially on mobile and embedded devices. The training process was conducted on Google Colab, using approximately 130,000 images to enhance model accuracy. Transfer learning and fine-tuning techniques were used to optimize the model's performance.
 
-![Screenshot_1](https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/5edfe4bb-4eb9-4e83-85e8-c5da67b2b95c)
+<p align="center">
+  <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/5edfe4bb-4eb9-4e83-85e8-c5da67b2b95c" alt="Screenshot_1" width="600">
+  <br>
+  <b>Screenshot 1: Classification Model Architecture</b>
+</p>
 
 
 ### Customer Tracking
 Human tracking is performed using the DeepSort (Simple Online Realtime Tracking) algorithm in this project. DeepSort is an algorithm that uses Kalman filtering and deep learning-based feature extraction to track objects in real-time. This is one of the crucial steps to ensure the proper functioning of the subsequent counting algorithm.
 
-![image](https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/a6ee647c-d053-4a73-bcab-9bf32df075d2)
-
-![person-detection-retail-0013](https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/1b348315-4a42-4c31-aed7-7d9e11b70f4e)
-
+<p align="center">
+  <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/a6ee647c-d053-4a73-bcab-9bf32df075d2" alt="Screenshot_1" width="600">
+  <br>
+  <b>Screenshot 1: Feature Appeareance Vector and Tracking Algorithm</b>
+</p>
+<p align="center">
+  <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/1b348315-4a42-4c31-aed7-7d9e11b70f4e" alt="Screenshot_1" width="600">
+  <br>
+  <b>Screenshot 1: Example Tracking Algorithm Results</b>
+</p>
 
 ### User-Interactive Interface
 The project's frontend was developed using ReactJS to provide a user-friendly web interface. The web interface visualizes in-store customer data and provides managers with the necessary information to make strategic decisions. Communication with the backend is facilitated via API, providing real-time data flow to the user. This allows store managers to easily monitor customer traffic, demographic information, and other vital data.
 
 <p align="center">
-  <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/ee9118ad-6312-45ce-8be9-bae3355251fc" alt="Image 1">
+  <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/ee9118ad-6312-45ce-8be9-bae3355251fc" alt="Image 1" width="600">
   <br>
   <b>Image 1: Login Page</b>
 </p>
 
 <p align="center">
-  <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/a650d95f-bbd8-497f-9d62-cdc0fd4e1ea6" alt="Image 2">
+  <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/a650d95f-bbd8-497f-9d62-cdc0fd4e1ea6" alt="Image 2" width="600">
   <br>
   <b>Image 2: Dashboard</b>
 </p>
 
 
 <p align="center">
-  <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/3e633fea-4787-4419-982b-ea8700f221fc" alt="Image 3">
+  <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/3e633fea-4787-4419-982b-ea8700f221fc" alt="Image 3" width="600">
   <br>
   <b>Image 3: Last Month Informations Dashboard </b>
 </p>
 
 <p align="center">
-  <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/baf2406b-9e2e-4ea1-8215-0ea68c3dca3b" alt="Image 4">
+  <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/baf2406b-9e2e-4ea1-8215-0ea68c3dca3b" alt="Image 4" width="600">
   <br>
   <b>Image 4: User Management Page</b>
 </p>
