@@ -38,14 +38,13 @@ The project's frontend was developed using ReactJS to provide a user-friendly we
 
 ## Contact Information
 
-**Project Lead:** Beytullah Yayla  
-**Department of Computer Engineering, Sakarya University**  
-Email: beytullah.yayla@ogr.sakarya.edu.tr
-
 **Advisor:** Prof. Dr. Nejat Yumuşak  
 **Department of Computer Engineering, Sakarya University**
 
 **Contributors:**
+- Beytullah Yayla  
+  Email: beytullahyayla1@gmail.com
+  
 - Mehmet Ataş  
   Email: mehmet.atas5@gmail.com
 
