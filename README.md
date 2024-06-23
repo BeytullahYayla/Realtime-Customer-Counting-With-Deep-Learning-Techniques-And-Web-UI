@@ -126,7 +126,7 @@ The project's frontend was developed using ReactJS to provide a user-friendly we
   Email: beytullahyayla1@gmail.com
   
 - Mehmet Ataş  
-  Email: mehmet.atas5@gmail.com
+  Email: atasmehmet@protonmail.com
 
 - Mehmet Oğuz Özkan  
   Email: mehmet.ozkan5@ogr.sakarya.edu.tr
