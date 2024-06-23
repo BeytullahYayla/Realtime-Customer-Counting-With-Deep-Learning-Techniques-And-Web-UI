@@ -33,13 +33,13 @@ Using deep learning and computer vision techniques, customer detection is implem
 <p align="center">
   <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/2d727e1d-0d5c-4591-90e6-92b5ed637969" alt="Image 1" width="600">
   <br>
-  <b>Image 1: YoloV8 Architecture</b>
+  <b>YoloV8 Architecture</b>
 </p>
 
 <p align="center">
   <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/8820ac34-efae-4351-a2b3-762a76dc828b" alt="Image 2" width="600">
   <br>
-  <b>Image 2: Example Detection Results </b>
+  <b>Example Detection Results </b>
 </p>
 
 
@@ -52,7 +52,7 @@ The customer counting algorithm aims to determine the number of customers in the
 <p align="center">
   <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/51371a0b-a60b-4d9f-aee1-f929a9e79d3b" alt="Screenshot_1" width="600">
   <br>
-  <b>Screenshot 1: Customer Counting Algorithm Flowchart</b>
+  <b> Customer Counting Algorithm Flowchart</b>
 </p>
 
 
@@ -62,7 +62,7 @@ Customer classification is performed using deep learning and image processing te
 <p align="center">
   <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/5edfe4bb-4eb9-4e83-85e8-c5da67b2b95c" alt="Screenshot_1" width="600">
   <br>
-  <b>Screenshot 1: Classification Model Architecture</b>
+  <b>Classification Model Architecture</b>
 </p>
 
 
@@ -77,7 +77,7 @@ Human tracking is performed using the DeepSort (Simple Online Realtime Tracking)
 <p align="center">
   <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/1b348315-4a42-4c31-aed7-7d9e11b70f4e" alt="Screenshot_1" width="600">
   <br>
-  <b>Screenshot 1: Example Tracking Algorithm Results</b>
+  <b>Example Tracking Algorithm Results</b>
 </p>
 
 ### User-Interactive Interface
@@ -86,26 +86,26 @@ The project's frontend was developed using ReactJS to provide a user-friendly we
 <p align="center">
   <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/ee9118ad-6312-45ce-8be9-bae3355251fc" alt="Image 1" width="600">
   <br>
-  <b>Image 1: Login Page</b>
+  <b>Login Page</b>
 </p>
 
 <p align="center">
   <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/a650d95f-bbd8-497f-9d62-cdc0fd4e1ea6" alt="Image 2" width="600">
   <br>
-  <b>Image 2: Dashboard</b>
+  <b>Dashboard</b>
 </p>
 
 
 <p align="center">
   <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/3e633fea-4787-4419-982b-ea8700f221fc" alt="Image 3" width="600">
   <br>
-  <b>Image 3: Last Month Informations Dashboard </b>
+  <b>Last Month Informations Dashboard </b>
 </p>
 
 <p align="center">
   <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/baf2406b-9e2e-4ea1-8215-0ea68c3dca3b" alt="Image 4" width="600">
   <br>
-  <b>Image 4: User Management Page</b>
+  <b>User Management Page</b>
 </p>
 
 
