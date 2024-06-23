@@ -72,7 +72,7 @@ Human tracking is performed using the DeepSort (Simple Online Realtime Tracking)
 <p align="center">
   <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/a6ee647c-d053-4a73-bcab-9bf32df075d2" alt="Screenshot_1" width="600">
   <br>
-  <b>Screenshot 1: Feature Appeareance Vector and Tracking Algorithm</b>
+  <b>Feature Appeareance Vector and Tracking Algorithm</b>
 </p>
 <p align="center">
   <img src="https://github.com/BeytullahYayla/Insight-Track-AI-Powered-Demographic-Analysis/assets/78471151/1b348315-4a42-4c31-aed7-7d9e11b70f4e" alt="Screenshot_1" width="600">
