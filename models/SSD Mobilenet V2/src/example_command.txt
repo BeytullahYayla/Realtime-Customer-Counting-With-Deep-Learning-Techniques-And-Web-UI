@@ -1,1 +1,0 @@
-python TFLite_detection_video.py --video="C:\Users\MSI\Desktop\Koçtaş\test_videos\cropped_10.avi" --modeldir="custom_model_lite" --magaza="CEVAHIR"
