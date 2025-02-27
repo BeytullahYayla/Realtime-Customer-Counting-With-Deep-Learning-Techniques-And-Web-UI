@@ -129,4 +129,4 @@ The project's frontend was developed using ReactJS to provide a user-friendly we
   Email: atasmehmet@protonmail.com
 
 - Mehmet Oğuz Özkan  
-  Email: mehmet.ozkan5@ogr.sakarya.edu.tr
+  Email: mehmetoguzozkan1@gmail.com
